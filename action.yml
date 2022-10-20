@@ -1,0 +1,14 @@
+name: 'Brisk - Setup Brisk'
+description: 'Sets up Brisk CLI in your GitHub Actions workflow.'
+author: 'Brisk Inc.'
+inputs:
+  brisk_version:
+    description: 'The version of Brisk CLI to install. Instead of full version string you can also specify constraint string starting with "<" (for example `<1.13.0`) to install the latest version satisfying the constraint. A value of `latest` will install the latest version of Brisk CLI. Defaults to `latest`.'
+    default: 'latest'
+    required: false
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+branding:
+  icon: 'zap'
+  color: 'blue'
