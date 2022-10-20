@@ -1,4 +1,3 @@
-
 import * as core from '@actions/core';
 import { default as setup } from './lib/setup-brisk';
 
