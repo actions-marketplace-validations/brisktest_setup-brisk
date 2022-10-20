@@ -4,7 +4,7 @@
 
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
-import { accessSync, chmod, constants } from 'fs';
+import { accessSync, chmodSync, constants } from 'fs';
 async function downloadCLI(
   url: string,
   destinationDir: string
@@ -64,27 +64,27 @@ async function run() {
 
     const pathToCLI = await downloadCLI(url, destinationDir);
 
-    await new Promise((resolve, reject) => {
-      chmod(pathToCLI, 0o775, (err) => {
-        if (err) {
-          core.debug(`chmod error ${err}`);
-          reject(err);
-        } else {
-          core.debug(`chmod success`);
 
-          try {
-            accessSync(pathToCLI, constants.X_OK);
-            console.log('can execute');
-            resolve('Success');
-          } catch (err) {
-            core.error(`no access! ${err}`);
+    try {
+      core.debug("Set executable permission to brisk file at " + pathToCLI);
+      chmodSync(pathToCLI, '777');
+      core.debug("We have changed the permission of brisk executable to 777");
+    } catch (error) {
+      core.debug(`chmodSync error: ${error}`);
+      core.setFailed(error as string);
+    }
 
-            core.setFailed(err as string);
-            reject(err);
-          }
-        }
-      });
-    });
+    try {
+      accessSync(pathToCLI, constants.X_OK);
+      console.log('can execute');
+
+    } catch (err) {
+      core.error(`no access! ${err}`);
+
+      core.setFailed(err as string);
+
+    }
+
 
     // Add to path
 
