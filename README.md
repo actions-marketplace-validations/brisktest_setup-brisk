@@ -15,14 +15,14 @@ The default configuration installs the latest version of Brisk CLI
 
 ```yaml
 steps:
-  - uses: brisktest/setup-brisk@v1
+  - uses: brisktest/setup-brisk@v1.1
 ```
 
 A specific version of Brisk CLI can be installed:
 
 ```yaml
 steps:
-  - uses: brisktest/setup-brisk@v1
+  - uses: brisktest/setup-brisk@v1.1
     with:
       brisk_version: 0.1.25
 ```
@@ -31,7 +31,7 @@ Credentials for Brisk ([brisktest.com](https://brisktest.com/)) can be configure
 
 ```yaml
 steps:
-  - uses: brisktest/setup-brisk@v1
+  - uses: brisktest/setup-brisk@v1.1
     with:
       api_token: ${{ secrets.BRISK_TOKEN }}
       api_key: ${{ secrets.BRISK_API_KEY }}
@@ -64,7 +64,7 @@ jobs:
         uses: actions/checkout@v3
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - name: Install Brisk
-        uses: brisktest/setup-brisk@v1
+        uses: brisktest/setup-brisk@v1.1
         with:
           brisk_version: 'latest'
           api_token: '${{ secrets.BRISK_APITOKEN }}'
