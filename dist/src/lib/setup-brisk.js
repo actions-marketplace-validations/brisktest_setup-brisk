@@ -1,7 +1,6 @@
 "use strict";
 // Node.js core
 Object.defineProperty(exports, "__esModule", { value: true });
-const os = require("os");
 // External
 const core = require("@actions/core");
 const tc = require("@actions/tool-cache");
@@ -35,10 +34,32 @@ async function run() {
     try {
         // Gather GitHub Actions inputs
         const version = core.getInput('brisk_version');
-        const token = core.getInput('brisk_token');
+        const api_token = core.getInput('api_token');
+        const api_key = core.getInput('api_key');
+        const project_token = core.getInput('project_token');
+        const config_file = core.getInput('config_file');
+        const brisk_ci = core.getInput('brisk_ci');
+        if (api_token.length > 0) {
+            core.exportVariable('BRISK_APITOKEN', api_token);
+        }
+        if (api_key.length > 0) {
+            core.exportVariable('BRISK_APIKEY', api_key);
+        }
+        if (project_token.length > 0) {
+            core.exportVariable('BRISK_PROJECT_TOKEN', project_token);
+        }
+        if (config_file.length > 0) {
+            core.exportVariable("BRISK_PROJECT_CONFIG_FILE", config_file);
+        }
+        if (brisk_ci.length > 0) {
+            core.exportVariable("BRISK_CI", brisk_ci);
+        }
+        else {
+            core.exportVariable("BRISK_CI", "true");
+        }
         // Gather OS details
-        const osPlatform = os.platform();
-        const osArch = os.arch();
+        // const osPlatform = os.platform();
+        // const osArch = os.arch();
         core.debug(`Finding releases for Brisk version ${version}`);
         const url = `https://update.brisktest.com/brisk/${version}/linux-amd64/brisk`;
         // Download requested version
