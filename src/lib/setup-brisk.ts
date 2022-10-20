@@ -65,7 +65,7 @@ async function run() {
     const pathToCLI = await downloadCLI(url, destinationDir);
 
     await new Promise((resolve, reject) => {
-      chmod(pathToCLI, 777, (err) => {
+      chmod(pathToCLI, 0o775, (err) => {
         if (err) {
           core.debug(`chmod error ${err}`);
           reject(err);
@@ -78,7 +78,8 @@ async function run() {
             resolve('Success');
           } catch (err) {
             core.error(`no access! ${err}`);
-            core.debug(`no access! ${err}`);
+
+            core.setFailed(err as string);
             reject(err);
           }
         }
