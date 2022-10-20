@@ -64,11 +64,10 @@ async function run() {
 
     const pathToCLI = await downloadCLI(url, destinationDir);
 
-
     try {
-      core.debug("Set executable permission to brisk file at " + pathToCLI);
+      core.debug('Set executable permission to brisk file at ' + pathToCLI);
       chmodSync(pathToCLI, '777');
-      core.debug("We have changed the permission of brisk executable to 777");
+      core.debug('We have changed the permission of brisk executable to 777');
     } catch (error) {
       core.debug(`chmodSync error: ${error}`);
       core.setFailed(error as string);
@@ -77,14 +76,11 @@ async function run() {
     try {
       accessSync(pathToCLI, constants.X_OK);
       console.log('can execute');
-
     } catch (err) {
       core.error(`no access! ${err}`);
 
       core.setFailed(err as string);
-
     }
-
 
     // Add to path
 

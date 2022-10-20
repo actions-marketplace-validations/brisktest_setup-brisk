@@ -50,27 +50,23 @@ async function run() {
         // Download requested version
         const destinationDir = process.env['RUNNER_TEMP'] || '';
         const pathToCLI = await downloadCLI(url, destinationDir);
-        await new Promise((resolve, reject) => {
-            (0, fs_1.chmod)(pathToCLI, 777, (err) => {
-                if (err) {
-                    core.debug(`chmod error ${err}`);
-                    reject(err);
-                }
-                else {
-                    core.debug(`chmod success`);
-                    try {
-                        (0, fs_1.accessSync)(pathToCLI, fs_1.constants.X_OK);
-                        console.log('can execute');
-                        resolve('Success');
-                    }
-                    catch (err) {
-                        core.error(`no access! ${err}`);
-                        core.debug(`no access! ${err}`);
-                        reject(err);
-                    }
-                }
-            });
-        });
+        try {
+            core.debug("Set executable permission to brisk file at " + pathToCLI);
+            (0, fs_1.chmodSync)(pathToCLI, '777');
+            core.debug("We have changed the permission of brisk executable to 777");
+        }
+        catch (error) {
+            core.debug(`chmodSync error: ${error}`);
+            core.setFailed(error);
+        }
+        try {
+            (0, fs_1.accessSync)(pathToCLI, fs_1.constants.X_OK);
+            console.log('can execute');
+        }
+        catch (err) {
+            core.error(`no access! ${err}`);
+            core.setFailed(err);
+        }
         // Add to path
         core.debug(`Brisk CLI path is ${pathToCLI}.`);
         // Add to path
