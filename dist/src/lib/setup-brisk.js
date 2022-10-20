@@ -3,12 +3,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // External
 const core = require("@actions/core");
-const io = require("@actions/io");
 const tc = require("@actions/tool-cache");
-async function downloadCLI(url) {
+async function downloadCLI(url, destinationDir) {
     core.debug(`Downloading Brisk CLI from ${url}`);
-    const tempDirectory = process.env['RUNNER_TEMP'] || '';
-    const pathToCLI = await tc.downloadTool(url, tempDirectory + "/brisk");
+    const pathToCLI = await tc.downloadTool(url, destinationDir + '/brisk');
     core.debug(`Brisk CLI path is ${pathToCLI}.`);
     if (!pathToCLI) {
         throw new Error(`Unable to download Brisk from ${url}`);
@@ -49,11 +47,12 @@ async function run() {
         const url = `https://update.brisktest.com/brisk/${version}/linux-amd64/brisk`;
         core.debug(`download brisk from ${url}`);
         // Download requested version
-        const pathToCLI = await downloadCLI(url);
+        const destinationDir = process.env['RUNNER_TEMP'] || '';
+        const pathToCLI = await downloadCLI(url, destinationDir);
         core.debug(`Brisk CLI path is ${pathToCLI}.`);
-        io.mv(pathToCLI, pathToCLI);
         // Add to path
         core.addPath(pathToCLI);
+        core.addPath(destinationDir);
     }
     catch (error) {
         core.error(error);
