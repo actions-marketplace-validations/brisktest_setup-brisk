@@ -4,6 +4,7 @@
 
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
+import { chmod } from 'fs';
 async function downloadCLI(
   url: string,
   destinationDir: string
@@ -62,6 +63,21 @@ async function run() {
     const destinationDir = process.env['RUNNER_TEMP'] || '';
 
     const pathToCLI = await downloadCLI(url, destinationDir);
+
+    await new Promise((resolve, reject) => {
+      chmod(pathToCLI, 700, (err) => {
+        if (err) {
+          core.debug(`chmod error ${err}`);
+          reject(err);
+        } else {
+          core.debug(`chmod success`);
+          resolve('Success');
+        }
+      });
+    });
+
+    // Add to path
+
     core.debug(`Brisk CLI path is ${pathToCLI}.`);
 
     // Add to path

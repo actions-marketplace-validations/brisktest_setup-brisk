@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // External
 const core = require("@actions/core");
 const tc = require("@actions/tool-cache");
+const fs_1 = require("fs");
 async function downloadCLI(url, destinationDir) {
     core.debug(`Downloading Brisk CLI from ${url}`);
     const pathToCLI = await tc.downloadTool(url, destinationDir + '/brisk');
@@ -49,6 +50,19 @@ async function run() {
         // Download requested version
         const destinationDir = process.env['RUNNER_TEMP'] || '';
         const pathToCLI = await downloadCLI(url, destinationDir);
+        await new Promise((resolve, reject) => {
+            (0, fs_1.chmod)(pathToCLI, 700, (err) => {
+                if (err) {
+                    core.debug(`chmod error ${err}`);
+                    reject(err);
+                }
+                else {
+                    core.debug(`chmod success`);
+                    resolve('Success');
+                }
+            });
+        });
+        // Add to path
         core.debug(`Brisk CLI path is ${pathToCLI}.`);
         // Add to path
         core.addPath(pathToCLI);
