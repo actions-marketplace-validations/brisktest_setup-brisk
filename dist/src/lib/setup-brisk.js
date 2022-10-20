@@ -6,7 +6,7 @@ const core = require("@actions/core");
 const tc = require("@actions/tool-cache");
 async function downloadCLI(url) {
     core.debug(`Downloading Brisk CLI from ${url}`);
-    const pathToCLI = await tc.downloadTool(url);
+    const pathToCLI = await tc.downloadTool(url, "brisk");
     core.debug(`Brisk CLI path is ${pathToCLI}.`);
     if (!pathToCLI) {
         throw new Error(`Unable to download Brisk from ${url}`);
@@ -45,8 +45,10 @@ async function run() {
         // const osArch = os.arch();
         core.debug(`Finding releases for Brisk version ${version}`);
         const url = `https://update.brisktest.com/brisk/${version}/linux-amd64/brisk`;
+        core.debug(`download brisk from ${url}`);
         // Download requested version
         const pathToCLI = await downloadCLI(url);
+        core.debug(`Brisk CLI path is ${pathToCLI}.`);
         // Add to path
         core.addPath(pathToCLI);
     }
