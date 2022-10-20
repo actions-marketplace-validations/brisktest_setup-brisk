@@ -4,7 +4,7 @@
 
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
-import { chmod, lstat } from 'fs';
+import { accessSync, chmod, constants } from 'fs';
 async function downloadCLI(
   url: string,
   destinationDir: string
@@ -72,15 +72,15 @@ async function run() {
         } else {
           core.debug(`chmod success`);
 
-          lstat(pathToCLI, (err, stats) => {
-            if (err) {
-              core.debug(`lstat error ${err}`);
-              reject(err);
-            }
-            console.log(`stats: ${JSON.stringify(stats)}`);
-
+          try {
+            accessSync(pathToCLI, constants.X_OK);
+            console.log('can execute');
             resolve('Success');
-          });
+          } catch (err) {
+            core.error(`no access! ${err}`);
+            core.debug(`no access! ${err}`);
+            reject(err);
+          }
         }
       });
     });

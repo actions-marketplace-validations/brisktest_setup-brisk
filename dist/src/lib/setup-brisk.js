@@ -58,14 +58,16 @@ async function run() {
                 }
                 else {
                     core.debug(`chmod success`);
-                    (0, fs_1.lstat)(pathToCLI, (err, stats) => {
-                        if (err) {
-                            core.debug(`lstat error ${err}`);
-                            reject(err);
-                        }
-                        console.log(`stats: ${JSON.stringify(stats)}`);
+                    try {
+                        (0, fs_1.accessSync)(pathToCLI, fs_1.constants.X_OK);
+                        console.log('can execute');
                         resolve('Success');
-                    });
+                    }
+                    catch (err) {
+                        core.error(`no access! ${err}`);
+                        core.debug(`no access! ${err}`);
+                        reject(err);
+                    }
                 }
             });
         });
