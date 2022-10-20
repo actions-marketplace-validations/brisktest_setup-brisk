@@ -3,10 +3,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // External
 const core = require("@actions/core");
+const io = require("@actions/io");
 const tc = require("@actions/tool-cache");
 async function downloadCLI(url) {
     core.debug(`Downloading Brisk CLI from ${url}`);
-    const pathToCLI = await tc.downloadTool(url, "brisk");
+    const tempDirectory = process.env['RUNNER_TEMP'] || '';
+    const pathToCLI = await tc.downloadTool(url, tempDirectory + "/brisk");
     core.debug(`Brisk CLI path is ${pathToCLI}.`);
     if (!pathToCLI) {
         throw new Error(`Unable to download Brisk from ${url}`);
@@ -49,6 +51,7 @@ async function run() {
         // Download requested version
         const pathToCLI = await downloadCLI(url);
         core.debug(`Brisk CLI path is ${pathToCLI}.`);
+        io.mv(pathToCLI, pathToCLI);
         // Add to path
         core.addPath(pathToCLI);
     }

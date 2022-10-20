@@ -3,11 +3,13 @@
 // External
 
 import * as core from '@actions/core';
+import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
-
 async function downloadCLI(url: string) {
   core.debug(`Downloading Brisk CLI from ${url}`);
-  const pathToCLI = await tc.downloadTool(url, 'brisk');
+  const tempDirectory = process.env['RUNNER_TEMP'] || '';
+
+  const pathToCLI = await tc.downloadTool(url, tempDirectory + '/brisk');
 
   core.debug(`Brisk CLI path is ${pathToCLI}.`);
 
@@ -55,8 +57,10 @@ async function run() {
     const url = `https://update.brisktest.com/brisk/${version}/linux-amd64/brisk`;
     core.debug(`download brisk from ${url}`);
     // Download requested version
+
     const pathToCLI = await downloadCLI(url);
     core.debug(`Brisk CLI path is ${pathToCLI}.`);
+    io.mv(pathToCLI, pathToCLI);
 
     // Add to path
     core.addPath(pathToCLI);
