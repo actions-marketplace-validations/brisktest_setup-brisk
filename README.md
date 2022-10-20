@@ -67,7 +67,7 @@ jobs:
         uses: actions/checkout@v3
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - name: Install Brisk
-        uses: brisktest/setup-brisk@v0.0.10
+        uses: brisktest/setup-brisk@v1
         with:
           brisk_version: 'latest'
           api_token: '${{ secrets.BRISK_APITOKEN }}'
