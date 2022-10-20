@@ -36,7 +36,8 @@ Credentials for Brisk  ([brisktest.com](https://brisktest.com/)) can be configur
 steps:
 - uses: brisktest/setup-brisk@v2
   with:
-    brisk_token: ${{ secrets.BRISK_TOKEN }}
+    api_token: ${{ secrets.BRISK_TOKEN }}
+    api_key: ${{ secrets.BRISK_API_KEY }}
 ```
 
 
@@ -45,9 +46,12 @@ steps:
 The action supports the following inputs:
 
 
-- `brisk_version` - (optional) The version of Brisk CLI to install. Defaults to latest or you can use a version string like 1.1.25
-
-
+- `brisk_version` - (optional) The version of Brisk CLI to install. Defaults to latest or you can use a version string like 0.1.25
+- `api_token` - (required) The API token from Brisk ([brisktest.com](https://brisktest.com/))
+- `api_key` - (required) The API key from Brisk ([brisktest.com](https://brisktest.com/))
+- `project_token` - (optional) The token that identifies the project. Can be provided in a config file, typically brisk.json
+- `config_file` - (optional) Path to a different config file, defaults to brisk.json
+- `brisk_ci` - (optional) Run brisk in CI mode. Defaults to true.
 
 ## License
 
