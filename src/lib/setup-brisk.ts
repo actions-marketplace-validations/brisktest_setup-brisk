@@ -4,7 +4,7 @@
 
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
-import { chmod } from 'fs';
+import { chmod, lstat } from 'fs';
 async function downloadCLI(
   url: string,
   destinationDir: string
@@ -65,13 +65,22 @@ async function run() {
     const pathToCLI = await downloadCLI(url, destinationDir);
 
     await new Promise((resolve, reject) => {
-      chmod(pathToCLI, 700, (err) => {
+      chmod(pathToCLI, 777, (err) => {
         if (err) {
           core.debug(`chmod error ${err}`);
           reject(err);
         } else {
           core.debug(`chmod success`);
-          resolve('Success');
+
+          lstat(pathToCLI, (err, stats) => {
+            if (err) {
+              core.debug(`lstat error ${err}`);
+              reject(err);
+            }
+            console.log(`stats: ${JSON.stringify(stats)}`);
+
+            resolve('Success');
+          });
         }
       });
     });

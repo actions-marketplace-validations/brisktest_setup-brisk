@@ -51,14 +51,21 @@ async function run() {
         const destinationDir = process.env['RUNNER_TEMP'] || '';
         const pathToCLI = await downloadCLI(url, destinationDir);
         await new Promise((resolve, reject) => {
-            (0, fs_1.chmod)(pathToCLI, 700, (err) => {
+            (0, fs_1.chmod)(pathToCLI, 777, (err) => {
                 if (err) {
                     core.debug(`chmod error ${err}`);
                     reject(err);
                 }
                 else {
                     core.debug(`chmod success`);
-                    resolve('Success');
+                    (0, fs_1.lstat)(pathToCLI, (err, stats) => {
+                        if (err) {
+                            core.debug(`lstat error ${err}`);
+                            reject(err);
+                        }
+                        console.log(`stats: ${JSON.stringify(stats)}`);
+                        resolve('Success');
+                    });
                 }
             });
         });
