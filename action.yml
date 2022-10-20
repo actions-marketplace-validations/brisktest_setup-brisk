@@ -3,8 +3,17 @@ description: 'Sets up Brisk CLI in your GitHub Actions workflow.'
 author: 'Brisk Inc.'
 inputs:
   brisk_version:
-    description: 'The version of Brisk CLI to install. Instead of full version string you can also specify constraint string starting with "<" (for example `<1.13.0`) to install the latest version satisfying the constraint. A value of `latest` will install the latest version of Brisk CLI. Defaults to `latest`.'
+    description: 'The version of Brisk CLI to install. A value of `latest` will install the latest version of Brisk CLI. Defaults to `latest`.'
     default: 'latest'
+    required: false
+  api_token:
+    description: 'The Brisk API token to use for authentication. If not specified, the action will try to read the token from the `BRISK_APITOKEN` environment variable.'
+    required: false    
+  api_key:
+    description: 'The Brisk API key to use for authentication. If not specified, the action will try to read the key from the `BRISK_APIKEY` environment variable.'
+    required: false
+  config_file:
+    description: 'The path to the Brisk configuration file. If not specified, the action will try to read the path from the `BRISK_PROJECT_CONFIG_FILE` environment variable.'
     required: false
 runs:
   using: 'node16'

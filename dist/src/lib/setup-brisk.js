@@ -51,9 +51,9 @@ async function run() {
         const destinationDir = process.env['RUNNER_TEMP'] || '';
         const pathToCLI = await downloadCLI(url, destinationDir);
         try {
-            core.debug("Set executable permission to brisk file at " + pathToCLI);
+            core.debug('Set executable permission to brisk file at ' + pathToCLI);
             (0, fs_1.chmodSync)(pathToCLI, '777');
-            core.debug("We have changed the permission of brisk executable to 777");
+            core.debug('We have changed the permission of brisk executable to 777');
         }
         catch (error) {
             core.debug(`chmodSync error: ${error}`);
