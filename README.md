@@ -1,8 +1,5 @@
 # setup-brisk
 
-[![Continuous Integration](https://github.com/brisktest/setup-brisk/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/brisktest/setup-brisk/actions/workflows/continuous-integration.yml)
-[![Setup Brisk](https://github.com/brisktest/setup-brisk/actions/workflows/setup-brisk.yml/badge.svg)](https://github.com/brisktest/setup-brisk/actions/workflows/setup-brisk.yml)
-
 The `brisktest/setup-brisk` action is a JavaScript action that sets up Brisk CLI in your GitHub Actions workflow by:
 
 - Downloading a specific version of Brisk CLI and adding it to the `PATH`.
